@@ -7,6 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.Inet4Address;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 @Controller
 public class HomeController {
 
@@ -66,28 +70,25 @@ public class HomeController {
 
     @PostMapping("/minar")
     public String minar(Model model, @RequestParam(name = "coordenadaExplotar") String coordenadaExplotar){
-
         String [] coordenadaExp = coordenadaExplotar.split(" ");
-
         contarMinasTablero(tablero);
 
         if (tablero.getCampo()[Integer.parseInt(coordenadaExp[0])][Integer.parseInt(coordenadaExp[1])] == -50){
-            vidas = vidas -1;
+            tablero.setIntentos(tablero.getIntentos() -1) ;
 
-            if (vidas == 0){
+            if (tablero.getIntentos() == 0){
                 String msg = "Usted a perdido el juego!";
-                model.addAttribute("msg");
-
+                model.addAttribute("msg" ,msg);
+                model.addAttribute("tablero",tablero);
                 return "jugar";
             }
 
         }else{
 
-
+            model.addAttribute("tablero",tablero);
             return "jugar";
         }
-        model.addAttribute("tablero",tablero);
-        return "jugar";
+
     }
 
 
@@ -157,5 +158,47 @@ public class HomeController {
                 }
             }
         }
+    }
+
+
+    /* función que me permitiría sacar los índices adyacentes a las coordenadas ingresadas por el usuario, pero no me salio pipipi
+    public int[][] escanear(String [] coordenadaExp, Tablero tablero){
+
+        int x = Integer.parseInt(coordenadaExp[0]);
+        int y = Integer.parseInt(coordenadaExp[1]);
+
+        int contador = 0;
+        ArrayList<Integer> index = new ArrayList<>();
+        for (int i = x-1; i<=x+1;x++ ){
+            for (int j = y-1; j<=y+1;j++ ){
+
+                if (tablero.getCampo()[i][j] != 0){
+
+                    index.add(sacarCoordenadas(tablero.getCampo()[i][j],tablero));
+
+                }
+
+            }
+        }
+    }
+*/
+
+
+    public int []sacarCoordenadas(int valor, Tablero tablero){
+
+        int [] index = new int[2];
+
+        for (int i =0 ; i<tablero.getFilas();i++){
+
+            for (int j = 0; j<tablero.getColumnas();j++){
+
+                if (tablero.getCampo()[i][j]==valor){
+                    index[0]=i;
+                    index[1]=j;
+                }
+            }
+
+        }
+        return index;
     }
 }
