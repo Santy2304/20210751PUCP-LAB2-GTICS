@@ -10,6 +10,8 @@ public class Tablero {
     private int intentos;
     private int bombas;
 
+
+
     private int [][] campo = new int[filas][columnas];
 
     public int getFilas() {
