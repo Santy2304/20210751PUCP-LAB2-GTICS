@@ -5,12 +5,12 @@ package com.example.lab02gtics.entity;
 
 public class Tablero {
 
-
     private int filas;
     private int columnas;
     private int intentos;
-
     private int bombas;
+
+    private int [][] campo = new int[filas][columnas];
 
     public int getFilas() {
         return filas;
@@ -44,7 +44,6 @@ public class Tablero {
         this.bombas = bombas;
     }
 
-    private int [][] campo = new int[filas][columnas];
 
     public int[][] getCampo() {
         return campo;

@@ -1,6 +1,7 @@
 package com.example.lab02gtics.controller;
 
 import com.example.lab02gtics.entity.Tablero;
+import org.apache.logging.log4j.util.PerformanceSensitive;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class HomeController {
+
 
     Tablero tablero = new Tablero();
 
@@ -18,13 +20,13 @@ public class HomeController {
         return "buscaminas";
     }
 
-    @PostMapping("/buscaminas/conf")
-
+    @PostMapping("/jugar")
     public String guardarConf(@RequestParam("filas") String filas,
                               @RequestParam("columnas") String columnas,
                               @RequestParam("intentos") String intentos,
                               @RequestParam("bombas") String bombas,
-                              @RequestParam("posiciones") String posiciones
+                              @RequestParam("posiciones") String posiciones,
+                              Model model
                               ){
 
         tablero.setFilas(Integer.parseInt(filas));
@@ -32,17 +34,19 @@ public class HomeController {
         tablero.setIntentos(Integer.parseInt(intentos));
         tablero.setBombas(Integer.parseInt(bombas));
 
-        int campo [][]= new int[tablero.getFilas()][tablero.getColumnas()];
+        int[][] arreglo = new int[tablero.getFilas()][tablero.getColumnas()];
 
-        tablero.setCampo(campo);
+        tablero.setCampo(arreglo);
 
+
+        model.addAttribute("tablero",tablero);
         return "jugar";
     }
 
-    @GetMapping("/jugar")
+    @PostMapping("/minar")
     public String jugar(Model model){
         model.addAttribute("tablero",tablero);
-        return "minar";
+        return "jugar";
     }
 
 }
